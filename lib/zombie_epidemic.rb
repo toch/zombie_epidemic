@@ -1,0 +1,1 @@
+require 'zombie_epidemic/version'
