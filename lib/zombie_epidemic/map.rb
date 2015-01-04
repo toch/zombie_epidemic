@@ -5,6 +5,7 @@ module ZombieEpidemic
       @width = width
       @height = height
       @points = Array.new(width) { Array.new(height) { point_klass.new } }
+      @free_positions = []
 
       @points.each_with_index do |col, x|
         col.each_with_index do |pt, y|
@@ -12,8 +13,11 @@ module ZombieEpidemic
           pt.neighborhood[:east] = (x < width - 1 ? @points[x + 1][y] : nil)
           pt.neighborhood[:south] = (y < height - 1 ? @points[x][y + 1] : nil)
           pt.neighborhood[:west] = (x > 0 ? @points[x - 1][y] : nil)
+          @free_positions << pt
         end
       end
+
+      @free_positions.shuffle
     end
 
     def point(x, y)
@@ -21,6 +25,10 @@ module ZombieEpidemic
       return nil if y < 0 || y > height - 1
 
       @points[x][y]
+    end
+
+    def free_random_position
+      @free_positions.pop
     end
   end
 end
