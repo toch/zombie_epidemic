@@ -8,3 +8,8 @@ end
 
 desc 'Run tests'
 task default: :test
+
+desc 'Run a console with the loaded library'
+task :console do
+  exec 'irb -r zombie_epidemic -I ./lib'
+end
