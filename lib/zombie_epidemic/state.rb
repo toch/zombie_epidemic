@@ -1,9 +1,10 @@
 module ZombieEpidemic
   class State
     attr_reader :name
-    def initialize(name)
+    def initialize(name, action_strategy = ->(agent){ :stay })
       @name = name
       @transitions = []
+      @action_strategy = action_strategy
     end
 
     def add_transition(target, check)
@@ -15,6 +16,10 @@ module ZombieEpidemic
         return target if check.call(self, agent)
       end
       self
+    end
+
+    def decide_action_for(agent)
+      @action_strategy.call(agent)
     end
   end
 end

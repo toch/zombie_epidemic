@@ -17,4 +17,8 @@ describe ZombieEpidemic::State do
 
     subject.trigger_transition(Object.new).must_equal state
   end
+
+  it 'decide the stay action for an agent by default' do
+    subject.decide_action_for(Object.new).must_equal :stay
+  end
 end
