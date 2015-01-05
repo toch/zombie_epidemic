@@ -19,6 +19,7 @@ describe ZombieEpidemic::Agent do
 
   it 'has a position' do
     subject.position.must_equal point 
+    subject.position.contents.must_equal subject
   end
 
   it 'has a health state' do

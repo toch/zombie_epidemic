@@ -1,12 +1,13 @@
 module ZombieEpidemic
   class Agent
-    attr_reader :state, :position, :state_age
+    attr_reader :state, :position, :state_age, :current_action
     def initialize(map, stm)
       @state = stm.default_state
       @new_state = @state
       @state_age = 0
       @position = map.free_random_position
       @new_position = @position
+      @position.contents = self
       @current_action = :stay
     end
 
