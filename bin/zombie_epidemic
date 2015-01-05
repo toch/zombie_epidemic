@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/zombie_epidemic"
+
+world = ZombieEpidemic::World.new
+world.run

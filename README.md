@@ -7,7 +7,7 @@ This is an Agent Based Model simulator of the Zombie Disease.
 Install it yourself as:
 
 ```
-$ gem install benchmark-experiment
+$ gem install zombie_epidemic
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ $ gem install benchmark-experiment
 With the default parameters, you just type:
 
 ```
-zombie-epidemic
+zombie_epidemic
 ```
 
 It will store the results as PNG files into the current directory.
@@ -25,7 +25,7 @@ It will store the results as PNG files into the current directory.
 ### Build the movie from the PNG sequences
 
 ```
-zombie-epidemic movie
+zombie_epidemic movie
 ```
 
 ## The Model
