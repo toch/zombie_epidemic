@@ -17,7 +17,7 @@ module ZombieEpidemic
         end
       end
 
-      @free_positions.shuffle
+      @free_positions.shuffle!
     end
 
     def point(x, y)
