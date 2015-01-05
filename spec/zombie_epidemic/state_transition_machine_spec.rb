@@ -78,7 +78,7 @@ describe ZombieEpidemic::StateTransitionMachine do
   end
 
   it 'implies a zombification when finished incubation' do
-    agent.state_age = 172_801
+    agent.state_age = 3601
     subject.states[:infected].trigger_transition(agent).must_equal subject.states[:zombie]
   end
 

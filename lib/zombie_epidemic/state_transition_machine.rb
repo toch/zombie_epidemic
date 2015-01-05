@@ -43,7 +43,7 @@ module ZombieEpidemic
       @states[:infected].add_transition(
         @states[:zombie],
         ->(state, agent) {
-          agent.state_age > 172_800
+          agent.state_age > 3_600
         }
       )
 
