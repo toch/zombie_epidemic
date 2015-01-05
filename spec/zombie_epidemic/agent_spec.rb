@@ -30,6 +30,8 @@ describe ZombieEpidemic::Agent do
     subject.position.must_equal point
     subject.commit
     subject.position.must_equal north_pt
+    north_pt.contents.must_equal subject
+    point.contents.must_equal nil
   end
 
   it 'doesn\'t walk if no free positions around him' do

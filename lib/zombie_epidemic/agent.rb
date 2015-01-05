@@ -43,6 +43,7 @@ module ZombieEpidemic
       if @new_position.empty?
         @position.contents = nil
         @position = @new_position
+        @position.contents = self
       end
       @state_age = 0 if @new_state != @state
       @state = @new_state
