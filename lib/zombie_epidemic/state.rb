@@ -7,15 +7,17 @@ module ZombieEpidemic
       @action_strategy = action_strategy
     end
 
-    def add_transition(target, check)
-      @transitions << [target, check]
+    def add_transition(target, check, priority = 0)
+      @transitions << [target, check, priority]
     end
 
     def trigger_transition(agent)
-      @transitions.each do |target, check|
-        return target if check.call(self, agent)
+      targets = {}
+      @transitions.each do |target, check, priority|
+        targets[priority] = target if check.call(self, agent)
       end
-      self
+      return self if targets.empty?
+      targets.max_by{ |priority, _| priority }.last
     end
 
     def decide_action_for(agent)
