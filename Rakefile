@@ -13,3 +13,9 @@ desc 'Run a console with the loaded library'
 task :console do
   exec 'irb -r zombie_epidemic -I ./lib'
 end
+
+desc 'Make a movie from sequence of maps'
+task :movie, [:directory] do |t, args|
+  puts 'missing directory' if args.directory.nil?
+  exec "convert -delay 10 -loop 0 #{args.directory}/*.png #{args.directory}.gif"
+end
