@@ -7,16 +7,15 @@ module ZombieEpidemic
       @state_age = 0
       @position = map.free_random_position
       @new_position = @position
-      @neighborhood = @position.neighborhood
       @current_action = :stay
     end
 
     def walk(direction)
-      @new_position = @neighborhood[direction] unless direction.nil?
+      @new_position = neighborhood[direction] unless direction.nil?
     end
 
     def perceive
-      @neighborhood.map do |direction, position|
+      neighborhood.map do |direction, position|
         position.nil? ? nil : [direction, position.contents]
       end.compact.to_h
     end
@@ -47,6 +46,11 @@ module ZombieEpidemic
       end
       @state_age = 0 if @new_state != @state
       @state = @new_state
+    end
+
+    private
+    def neighborhood
+      @position.neighborhood
     end
   end
 end
