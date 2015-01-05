@@ -15,7 +15,7 @@ module ZombieEpidemic
     end
 
     def empty?
-      !@contents.nil?
+      @contents.nil?
     end
   end
 end
