@@ -2,6 +2,21 @@
 
 This is an Agent Based Model simulator of the Zombie Disease.
 
+## Examples
+
+Below two results obtained with the simulator.
+Legend:
+
+* green: healthy human
+* yellow: infected human
+* red: zombie
+* black: killed human or zombie
+
+![Human wins!](https://raw.githubusercontent.com/toch/parisrb-150106/master/images/zombie_epidemic_1420498864.gif)
+![Zombie wins!](https://raw.githubusercontent.com/toch/parisrb-150106/master/images/zombie_epidemic_1420500631.gif)
+
+I've [presented the simulator first at Paris.rb Jan 2015](https://rawgit.com/toch/parisrb-150106/master/presentation.html).
+
 ## Installation
 
 Install it yourself as:
