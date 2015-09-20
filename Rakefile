@@ -19,3 +19,12 @@ task :movie, [:directory] do |t, args|
   puts 'missing directory' if args.directory.nil?
   exec "convert -delay 10 -loop 0 #{args.directory}/*.png #{args.directory}.gif"
 end
+
+desc 'replay into terminal'
+task :replay, [:directory] do |t, args|
+  puts 'missing directory' if args.directory.nil?
+  Dir.glob("#{args.directory}/step_*.png").sort.each do |file|
+    puts `img2txt -H 31 -d none #{file}`
+    sleep 1
+  end
+end
