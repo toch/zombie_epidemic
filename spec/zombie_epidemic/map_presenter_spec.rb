@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-FakePointPresenter = Struct.new("FakePointPresenter") do
+FakePointPresenter2 = Struct.new("FakePointPresenter") do
   def render(point)
     :black
   end
@@ -14,7 +14,7 @@ end
 
 describe ZombieEpidemic::MapPresenter do
   let(:map) { FakeMap.new(10, 10) }
-  subject   { ZombieEpidemic::MapPresenter.new(FakePointPresenter) }
+  subject   { ZombieEpidemic::MapPresenter.new(FakePointPresenter2) }
 
   it 'renders a black png 10x10' do
     png = subject.render(map)

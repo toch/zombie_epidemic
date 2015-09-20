@@ -82,7 +82,7 @@ describe ZombieEpidemic::Map do
   end
 
   it 'has 25 free positions' do
-    25.times.each do 
+    25.times.each do
       subject.free_random_position.wont_be_nil
     end
     subject.free_random_position.must_be_nil

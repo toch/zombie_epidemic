@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-FakePoint = Struct.new("PointPresenter", :contents) do
+FakePointPresenter = Struct.new("PointPresenter", :contents) do
   def empty?
     contents.nil?
   end
@@ -9,7 +9,7 @@ end
 describe ZombieEpidemic::PointPresenter do
   let(:state) { OpenStruct.new(name: :susceptible) }
   let(:agent) { OpenStruct.new(state: state) }
-  let(:point) { FakePoint.new(nil) }
+  let(:point) { FakePointPresenter.new(nil) }
   subject     { ZombieEpidemic::PointPresenter.new }
 
   it 'colors the point as grey if empty' do
