@@ -2,5 +2,5 @@
 
 require_relative "../lib/zombie_epidemic"
 
-world = ZombieEpidemic::World.new
-world.run
+world = ZombieEpidemic::World.new(50)
+world.run(output_on_console: true)
