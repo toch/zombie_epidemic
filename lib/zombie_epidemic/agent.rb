@@ -27,7 +27,7 @@ module ZombieEpidemic
       if @current_action == :walk
         neighbors = perceive
         unless neighbors.empty?
-          walk(neighbors.keys.sample) 
+          walk(neighbors.keys.sample)
         else
           @current_action = :stay
         end

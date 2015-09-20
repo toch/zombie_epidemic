@@ -12,7 +12,7 @@ end
 
 describe ZombieEpidemic::StateTransitionMachine do
   subject                   { ZombieEpidemic::StateTransitionMachine.new(FakeRandom) }
-  
+
   let(:empty_neighborhood)  { {north: nil, south: nil, east: nil, west: nil} }
   let(:point)               { OpenStruct.new(neighborhood: empty_neighborhood, empty?: false) }
   let(:agent)               { OpenStruct.new(position: point, state: subject.states[:susceptible], state_age: 0) }
@@ -20,9 +20,10 @@ describe ZombieEpidemic::StateTransitionMachine do
 
   it 'returns most of the time (90%) susceptible as a default state' do
     subject.instance_variable_set("@prng", FakeRandom.new(11))
+    subject.reload
     subject.default_state.must_equal subject.states[:susceptible]
   end
-  
+
   it 'returns sometimes (10%) zombie as a default state' do
     subject.default_state.must_equal subject.states[:zombie]
   end
@@ -49,6 +50,7 @@ describe ZombieEpidemic::StateTransitionMachine do
 
   it 'implies infection when bitten by a zombie' do
     subject.instance_variable_set("@prng", FakeRandom.new(9))
+    subject.reload
     empty_neighborhood[:north] = OpenStruct.new(empty?: false, contents: zombie)
     subject.states[:susceptible].trigger_transition(agent).must_equal subject.states[:infected]
   end

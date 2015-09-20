@@ -17,6 +17,7 @@ module ZombieEpidemic
       render(dirname, digits, 10, output_on_console)
 
       steps.times do
+        @stm.reload
         @time += 1
         puts "Time: #{@time}"
         @agents.each_with_index do |agent, index|

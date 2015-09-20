@@ -3,101 +3,37 @@ module ZombieEpidemic
     attr_reader :states
     def initialize(rand_klass = Random)
       @prng = rand_klass.new
-      @states = {
-        susceptible: State.new(
-                       :susceptible,
-                       ->(agent) {
-                         [:walk, :stay, :fight].sample
-                       }
-                     ),
-        infected: State.new(
-                    :infected,
-                    ->(agent) {
-                      [:walk, :stay, :fight].sample
-                    }
-                  ),
-        zombie: State.new(
-                  :zombie,
-                  ->(agent) {
-                    [:walk, :fight].sample
-                  }
-                ),
-        dead: State.new(:dead)
-      }
+      reload
+    end
 
-      @states[:susceptible].add_transition(
-        @states[:infected],
-        ->(state, agent) {
-          agent.position.neighborhood.each do |_, position|
-            return true if
-              position &&
-              !position.empty? &&
-              position.contents.state.name == :zombie &&
-              position.contents.current_action == :fight &&
-              @prng.rand(100) < 10
-          end
-          false
-        }
-      )
-
-      @states[:infected].add_transition(
-        @states[:zombie],
-        ->(state, agent) {
-          agent.state_age > 3_600
-        }
-      )
-
-      @states[:susceptible].add_transition(
-        @states[:dead],
-        ->(state, agent) {
-          agent.position.neighborhood.each do |_, position|
-            return true if
-              position &&
-              !position.empty? &&
-              position.contents.state.name == :zombie &&
-              position.contents.current_action == :fight &&
-              @prng.rand(100) < 1
-          end
-          false
-        },
-        10
-      )
-
-
-      @states[:infected].add_transition(
-        @states[:dead],
-        ->(state, agent) {
-          agent.position.neighborhood.each do |_, position|
-            return true if
-              position &&
-              !position.empty? &&
-              position.contents.state.name == :zombie &&
-              position.contents.current_action == :fight &&
-              @prng.rand(100) < 10
-          end
-          false
-        }
-      )
-
-      @states[:zombie].add_transition(
-        @states[:dead],
-        ->(state, agent) {
-          agent.position.neighborhood.each do |_, position|
-            return true if
-              position &&
-              !position.empty? &&
-              [:susceptible, :infected].include?(position.contents.state.name) &&
-              position.contents.current_action == :fight &&
-              @prng.rand(100) < 50
-          end
-          false
-        }
-      )
+    def reload
+      load_definition
+      load_states
+      load_transitions
+      load_default_state
     end
 
     def default_state
-      return @states[:zombie] if @prng.rand(100) < 10
-      @states[:susceptible]
+      @default_state_fn.call(@states, @prng)
+    end
+
+    private
+
+    def load_definition
+      load(File.join(File.dirname(File.expand_path(__FILE__)), "stm_definition.rb"))
+    end
+
+    def load_states
+      @states ||= {}
+      ZombieEpidemic::StateTransitionMachineDefinition::states(@states)
+    end
+
+    def load_transitions
+      ZombieEpidemic::StateTransitionMachineDefinition::transitions(@states, @prng)
+    end
+
+    def load_default_state
+      @default_state_fn = ZombieEpidemic::StateTransitionMachineDefinition::default_state
     end
   end
 end

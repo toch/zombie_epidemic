@@ -23,5 +23,10 @@ module ZombieEpidemic
     def decide_action_for(agent)
       @action_strategy.call(agent)
     end
+
+    def define_action(action_strategy)
+      @transitions = []
+      @action_strategy = action_strategy
+    end
   end
 end
