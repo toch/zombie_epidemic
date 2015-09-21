@@ -4,7 +4,7 @@ module ZombieEpidemic
       @map = map_klass.new(10, 10)
       @stm = StateTransitionMachine.new
       @agents = []
-      population_size.times { @agents << Agent.new(@map, @stm) }
+      population_size.times { @agents << Agent.new(@map.free_random_position, @stm) }
       @time = 0
     end
 
@@ -30,15 +30,9 @@ module ZombieEpidemic
         render(dirname, digits, 10, output_on_console)
         deads = @agents.select{ |agent| agent.state.name == :dead }
         @agents.reject!{ |agent| agent.state.name == :dead }
-        if deads
-          deads.each do |dead|
-            if dead.position
-              dead.position.contents = nil
-              dead.position = nil
-            end
-          end if deads
-          deads.clear
-        end
+
+        deads.each { |dead| dead.unposition }
+        deads.clear
       end
     end
 

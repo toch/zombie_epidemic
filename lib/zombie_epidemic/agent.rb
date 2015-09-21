@@ -2,11 +2,11 @@ module ZombieEpidemic
   class Agent
     attr_reader :state, :state_age, :current_action
     attr_accessor :position
-    def initialize(map, stm)
+    def initialize(start_position, stm)
       @state = stm.default_state
       @new_state = @state
       @state_age = 0
-      @position = map.free_random_position
+      @position = start_position
       @new_position = @position
       @position.contents = self
       @current_action = :stay
@@ -41,18 +41,26 @@ module ZombieEpidemic
     end
 
     def commit
-      if @new_position.empty?
-        @position.contents = nil
-        @position = @new_position
-        @position.contents = self
-      end
+      move
       @state_age = 0 if @new_state != @state
       @state = @new_state
+    end
+
+    def unposition
+      @position.clear
+      @position = nil
     end
 
     private
     def neighborhood
       @position.neighborhood
+    end
+
+    def move
+      return unless @new_position || @new_position.empty?
+      @position.clear
+      @position = @new_position
+      @position.contents = self
     end
   end
 end

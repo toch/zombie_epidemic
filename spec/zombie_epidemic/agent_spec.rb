@@ -12,13 +12,28 @@ end
 
 describe ZombieEpidemic::Agent do
   let(:north_pt)  { OpenStruct.new(empty?: true) }
-  let(:point)     { OpenStruct.new(neighborhood: {north: north_pt}) }
+  let(:point)     do
+                    Struct.new("Point", :neighborhood, :contents) do
+                      def initialize(north_pt)
+                        super
+                        self.neighborhood = {north: north_pt}
+                        self.contents = nil
+                      end
+
+                      def clear
+                        self.contents = nil
+                      end
+                      def empty?
+                        self.contents.nil?
+                      end
+                    end.new(north_pt)
+                  end
   let(:map)       { OpenStruct.new(free_random_position: point) }
   let(:stm)       { OpenStruct.new(default_state: FakeState.new) }
-  subject         { ZombieEpidemic::Agent.new(map, stm) }
+  subject         { ZombieEpidemic::Agent.new(map.free_random_position, stm) }
 
   it 'has a position' do
-    subject.position.must_equal point 
+    subject.position.must_equal point
     subject.position.contents.must_equal subject
   end
 
@@ -26,7 +41,7 @@ describe ZombieEpidemic::Agent do
     subject.state.must_equal stm.default_state
   end
 
-  it 'can walk' do    
+  it 'can walk' do
     subject.walk(:north)
     subject.position.must_equal point
     subject.commit
