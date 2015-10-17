@@ -25,8 +25,6 @@ module ZombieEpidemic
         ->(state, agent) {
           agent.position.neighborhood.each do |_, position|
             return true if
-              position &&
-              !position.empty? &&
               position.contents.state.name == :zombie &&
               position.contents.current_action == :fight &&
               prng.rand(100) < 10
@@ -47,8 +45,6 @@ module ZombieEpidemic
         ->(state, agent) {
           agent.position.neighborhood.each do |_, position|
             return true if
-              position &&
-              !position.empty? &&
               position.contents.state.name == :zombie &&
               position.contents.current_action == :fight &&
               prng.rand(100) < 1
@@ -64,8 +60,6 @@ module ZombieEpidemic
         ->(state, agent) {
           agent.position.neighborhood.each do |_, position|
             return true if
-              position &&
-              !position.empty? &&
               position.contents.state.name == :zombie &&
               position.contents.current_action == :fight &&
               prng.rand(100) < 10
@@ -79,8 +73,6 @@ module ZombieEpidemic
         ->(state, agent) {
           agent.position.neighborhood.each do |_, position|
             return true if
-              position &&
-              !position.empty? &&
               [:susceptible, :infected].include?(position.contents.state.name) &&
               position.contents.current_action == :fight &&
               prng.rand(100) < 50

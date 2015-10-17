@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-FakePoint = Struct.new("Point", :neighborhood) do |obj|
+FakePoint = Struct.new("Point", :neighborhood, :contents) do |obj|
   def initialize(*)
     super
     self.neighborhood ||= {
@@ -9,7 +9,13 @@ FakePoint = Struct.new("Point", :neighborhood) do |obj|
         south: nil,
         east: nil
       }
+    self.contents ||= nil
   end
+
+  def self.create_void
+    self.new
+  end
+
 
   def to_str
     "#{self.object_id}"
@@ -27,18 +33,18 @@ describe ZombieEpidemic::Map do
 
   it 'builds the point (0, 0) in the left top corner' do
     expected = {
-      north: nil,
+      north: subject.void_point,
       east: subject.point(1, 0),
       south: subject.point(0, 1),
-      west: nil
+      west: subject.void_point
     }
     subject.point(0, 0).neighborhood.must_equal expected
   end
 
   it 'builds the point (4, 0) in the right top corner' do
     expected = {
-      north: nil,
-      east: nil,
+      north: subject.void_point,
+      east: subject.void_point,
       south: subject.point(width - 1, 1),
       west: subject.point(width - 2, 0)
     }
@@ -48,8 +54,8 @@ describe ZombieEpidemic::Map do
   it 'builds the point (4, 4) in the right bottom corner' do
     expected = {
       north: subject.point(width - 1, height - 2),
-      east: nil,
-      south: nil,
+      east: subject.void_point,
+      south: subject.void_point,
       west: subject.point(width - 2, height - 1)
     }
     subject.point(width - 1, height - 1).neighborhood.must_equal expected
@@ -59,8 +65,8 @@ describe ZombieEpidemic::Map do
     expected = {
       north: subject.point(0, height - 2),
       east: subject.point(1, height - 1),
-      south: nil,
-      west: nil
+      south: subject.void_point,
+      west: subject.void_point
     }
     subject.point(0, height - 1).neighborhood.must_equal expected
   end

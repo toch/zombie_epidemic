@@ -13,7 +13,9 @@ end
 describe ZombieEpidemic::StateTransitionMachine do
   subject                   { ZombieEpidemic::StateTransitionMachine.new(FakeRandom) }
 
-  let(:empty_neighborhood)  { {north: nil, south: nil, east: nil, west: nil} }
+  let(:void)                { Class.new{ def method_missing(*args, &block); self; end }.new }
+  let(:void_point)          { OpenStruct.new(contents: void) }
+  let(:empty_neighborhood)  { {north: void_point, south: void_point, east: void_point, west: void_point} }
   let(:point)               { OpenStruct.new(neighborhood: empty_neighborhood, empty?: false) }
   let(:agent)               { OpenStruct.new(position: point, state: subject.states[:susceptible], state_age: 0) }
   let(:zombie)              { OpenStruct.new(state: subject.states[:zombie], current_action: :fight)}

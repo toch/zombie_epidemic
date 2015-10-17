@@ -1,18 +1,20 @@
 module ZombieEpidemic
   class Map
-    attr_reader :width, :height
+    attr_reader :width, :height, :void_point
     def initialize(width, height, point_klass = Point)
       @width = width
       @height = height
       @points = Array.new(width) { Array.new(height) { point_klass.new } }
       @free_positions = []
 
+      @void_point = point_klass.create_void
+
       @points.each_with_index do |col, x|
         col.each_with_index do |pt, y|
-          pt.neighborhood[:north] = (y > 0 ? @points[x][y - 1] : nil)
-          pt.neighborhood[:east] = (x < width - 1 ? @points[x + 1][y] : nil)
-          pt.neighborhood[:south] = (y < height - 1 ? @points[x][y + 1] : nil)
-          pt.neighborhood[:west] = (x > 0 ? @points[x - 1][y] : nil)
+          pt.neighborhood[:north] = (y > 0 ? @points[x][y - 1] : @void_point )
+          pt.neighborhood[:east] = (x < width - 1 ? @points[x + 1][y] : @void_point )
+          pt.neighborhood[:south] = (y < height - 1 ? @points[x][y + 1] : @void_point )
+          pt.neighborhood[:west] = (x > 0 ? @points[x - 1][y] : @void_point )
           @free_positions << pt
         end
       end
@@ -30,5 +32,6 @@ module ZombieEpidemic
     def free_random_position
       @free_positions.pop
     end
+
   end
 end
