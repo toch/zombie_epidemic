@@ -1,3 +1,4 @@
+require_relative "check_position_content"
 module ZombieEpidemic
   module StateTransitionMachineDefinition
     def self.states(states)
@@ -24,10 +25,12 @@ module ZombieEpidemic
         states[:infected],
         ->(state, agent) {
           agent.position.neighborhood.each do |_, position|
-            return true if
-              position.contents.state.name == :zombie &&
-              position.contents.current_action == :fight &&
-              prng.rand(100) < 10
+            return check(position) \
+                     .has_an(:agent) \
+                     .is(:zombie) \
+                     .is(:fighting) \
+                     .to_b &&
+                   prng.rand(100) < 10
           end
           false
         }
@@ -44,10 +47,12 @@ module ZombieEpidemic
         states[:dead],
         ->(state, agent) {
           agent.position.neighborhood.each do |_, position|
-            return true if
-              position.contents.state.name == :zombie &&
-              position.contents.current_action == :fight &&
-              prng.rand(100) < 1
+            return check(position) \
+                     .has_an(:agent) \
+                     .is(:zombie) \
+                     .is(:fighting) \
+                     .to_b &&
+                   prng.rand(100) < 1
           end
           false
         },
@@ -59,10 +64,12 @@ module ZombieEpidemic
         states[:dead],
         ->(state, agent) {
           agent.position.neighborhood.each do |_, position|
-            return true if
-              position.contents.state.name == :zombie &&
-              position.contents.current_action == :fight &&
-              prng.rand(100) < 10
+            return check(position) \
+                     .has_an(:agent) \
+                     .is(:zombie) \
+                     .is(:fighting) \
+                     .to_b &&
+                   prng.rand(100) < 10
           end
           false
         }
@@ -72,10 +79,12 @@ module ZombieEpidemic
         states[:dead],
         ->(state, agent) {
           agent.position.neighborhood.each do |_, position|
-            return true if
-              [:susceptible, :infected].include?(position.contents.state.name) &&
-              position.contents.current_action == :fight &&
-              prng.rand(100) < 50
+            return check(position) \
+                     .has_an(:agent) \
+                     .is(:susceptible, :infected) \
+                     .is(:fighting) \
+                     .to_b &&
+                   prng.rand(100) < 50
           end
           false
         }
@@ -90,6 +99,8 @@ module ZombieEpidemic
     end
 
     private
+    extend CheckPositionContent
+
     def self.fetch_state(states, name)
       states[name] = State.new(name) unless states.has_key?(name)
       states[name]

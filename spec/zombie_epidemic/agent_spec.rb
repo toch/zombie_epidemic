@@ -12,22 +12,23 @@ end
 
 describe ZombieEpidemic::Agent do
   let(:north_pt)  { OpenStruct.new(empty?: true) }
-  let(:point)     do
-                    Struct.new("Point", :neighborhood, :contents) do
-                      def initialize(north_pt)
-                        super
-                        self.neighborhood = {north: north_pt}
-                        self.contents = nil
-                      end
 
-                      def clear
-                        self.contents = nil
-                      end
-                      def empty?
-                        self.contents.nil?
-                      end
-                    end.new(north_pt)
-                  end
+  FakePointForAgent = Struct.new("Point", :neighborhood, :contents) do
+    def initialize(north_pt)
+      super
+      self.neighborhood = {north: north_pt}
+      self.contents = nil
+    end
+
+    def clear
+      self.contents = nil
+    end
+    def empty?
+      self.contents.nil?
+    end
+  end
+
+  let(:point)     { FakePointForAgent.new(north_pt) }
   let(:map)       { OpenStruct.new(free_random_position: point) }
   let(:stm)       { OpenStruct.new(default_state: FakeState.new) }
   subject         { ZombieEpidemic::Agent.new(map.free_random_position, stm) }
