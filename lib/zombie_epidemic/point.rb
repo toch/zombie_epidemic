@@ -6,7 +6,7 @@ module ZombieEpidemic
     attr_accessor :contents
 
     def self.create_void
-      void_point = point_klass.new
+      void_point = Point.new
       [:north, :east, :south, :west].each do |direction|
         void_point.neighborhood[direction] = void_point
       end
