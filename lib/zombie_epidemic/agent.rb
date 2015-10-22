@@ -13,7 +13,9 @@ module ZombieEpidemic
     end
 
     def walk(direction)
-      @new_position = neighborhood[direction] unless direction.nil?
+      return if direction.nil?
+      return unless neighborhood[direction].empty?
+      @new_position = neighborhood[direction]
     end
 
     def perceive
@@ -57,7 +59,9 @@ module ZombieEpidemic
     end
 
     def move
-      return unless @new_position || @new_position.empty?
+      return unless @new_position
+      return unless @new_position.empty?
+      return unless @new_position != @position
       @position.clear
       @position = @new_position
       @position.contents = self

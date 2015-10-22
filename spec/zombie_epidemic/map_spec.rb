@@ -12,7 +12,7 @@ FakePoint = Struct.new("Point", :neighborhood, :contents) do |obj|
     self.contents ||= nil
   end
 
-  def self.create_void
+  def self.create_border
     self.new
   end
 
@@ -33,18 +33,18 @@ describe ZombieEpidemic::Map do
 
   it 'builds the point (0, 0) in the left top corner' do
     expected = {
-      north: subject.void_point,
+      north: subject.border_point,
       east: subject.point(1, 0),
       south: subject.point(0, 1),
-      west: subject.void_point
+      west: subject.border_point
     }
     subject.point(0, 0).neighborhood.must_equal expected
   end
 
   it 'builds the point (4, 0) in the right top corner' do
     expected = {
-      north: subject.void_point,
-      east: subject.void_point,
+      north: subject.border_point,
+      east: subject.border_point,
       south: subject.point(width - 1, 1),
       west: subject.point(width - 2, 0)
     }
@@ -54,8 +54,8 @@ describe ZombieEpidemic::Map do
   it 'builds the point (4, 4) in the right bottom corner' do
     expected = {
       north: subject.point(width - 1, height - 2),
-      east: subject.void_point,
-      south: subject.void_point,
+      east: subject.border_point,
+      south: subject.border_point,
       west: subject.point(width - 2, height - 1)
     }
     subject.point(width - 1, height - 1).neighborhood.must_equal expected
@@ -65,8 +65,8 @@ describe ZombieEpidemic::Map do
     expected = {
       north: subject.point(0, height - 2),
       east: subject.point(1, height - 1),
-      south: subject.void_point,
-      west: subject.void_point
+      south: subject.border_point,
+      west: subject.border_point
     }
     subject.point(0, height - 1).neighborhood.must_equal expected
   end

@@ -5,12 +5,14 @@ module ZombieEpidemic
     attr_reader :neighborhood
     attr_accessor :contents
 
-    def self.create_void
-      void_point = Point.new
+    def self.create_border
+      return @@border_point if @@border_point
+      @@border_point = Point.new
       [:north, :east, :south, :west].each do |direction|
-        void_point.neighborhood[direction] = void_point
+        @@border_point.neighborhood[direction] = @@border_point
       end
-      void_point
+      @@border_point.contents = Border.new
+      @@border_point
     end
 
     def initialize
@@ -31,5 +33,7 @@ module ZombieEpidemic
     def clear
       @contents = Void.new
     end
+    private
+    @@border_point = nil
   end
 end
