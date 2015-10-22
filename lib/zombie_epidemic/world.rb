@@ -1,7 +1,7 @@
 module ZombieEpidemic
   class World
-    def initialize(population_size = 10, map_klass = Map, agent_klass = Agent)
-      @map = map_klass.new(10, 10)
+    def initialize(population_size = 10, map_size = 10, map_klass = Map, agent_klass = Agent)
+      @map = map_klass.new(map_size, map_size)
       @stm = StateTransitionMachine.new
       @agents = []
       population_size.times { @agents << Agent.new(@map.free_random_position, @stm) }
@@ -50,7 +50,7 @@ module ZombieEpidemic
 
       if on_console
         puts `img2txt -H 31 -d none #{file}`
-        sleep 1
+        sleep 0.5
       end
     end
   end
