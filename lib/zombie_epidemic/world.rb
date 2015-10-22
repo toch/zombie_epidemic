@@ -1,10 +1,18 @@
 module ZombieEpidemic
   class World
-    def initialize(population_size = 10, map_size = 10, map_klass = Map, agent_klass = Agent)
+    def initialize(population_size = 10, map_size = 10, nbr_of_obstacles = 0, map_klass = Map, agent_klass = Agent)
       @map = map_klass.new(map_size, map_size)
       @stm = StateTransitionMachine.new
       @agents = []
-      population_size.times { @agents << Agent.new(@map.free_random_position, @stm) }
+      @obstacles = []
+      nbr_of_obstacles.times do
+        break unless @map.has_still_free_position?
+        @obstacles << Obstacle.new(@map.free_random_position)
+      end
+      population_size.times do
+        break unless @map.has_still_free_position?
+        @agents << Agent.new(@map.free_random_position, @stm)
+      end
       @time = 0
     end
 
