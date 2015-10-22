@@ -33,5 +33,9 @@ module ZombieEpidemic
       @free_positions.pop
     end
 
+    def has_still_free_position?
+      !@free_positions.empty?
+    end
+
   end
 end
