@@ -62,7 +62,7 @@ describe ZombieEpidemic::StateTransitionMachine do
   end
 
   it 'implies infection when bitten by a zombie' do
-    subject.instance_variable_set("@prng", FakeRandom.new(9))
+    subject.instance_variable_set("@prng", FakeRandom.new(49))
     subject.reload
     empty_neighborhood[:north] = OpenStruct.new(empty?: false, contents: zombie)
     subject.states[:susceptible].trigger_transition(agent).must_equal subject.states[:infected]

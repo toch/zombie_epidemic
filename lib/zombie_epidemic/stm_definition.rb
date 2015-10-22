@@ -26,37 +26,35 @@ module ZombieEpidemic
       states[:susceptible].add_transition(
         states[:infected],
         ->(state, agent) {
-          agent.position.neighborhood.each do |_, position|
-            return check(position) \
-                     .has_an(:agent) \
-                     .is(:zombie) \
-                     .is(:fighting) \
-                     .to_b &&
-                   prng.rand(100) < 10
-          end
-          false
+          agent.position.neighborhood.map do |_, position|
+            check(position) \
+              .has_an(:agent) \
+              .is(:zombie) \
+              .is(:fighting) \
+              .to_b &&
+            prng.rand(100) < 50
+          end.any?
         }
       )
 
       states[:infected].add_transition(
         states[:zombie],
         ->(state, agent) {
-          agent.state_age > 3_600
+          agent.state_age > 2
         }
       )
 
       states[:susceptible].add_transition(
         states[:dead],
         ->(state, agent) {
-          agent.position.neighborhood.each do |_, position|
-            return check(position) \
-                     .has_an(:agent) \
-                     .is(:zombie) \
-                     .is(:fighting) \
-                     .to_b &&
-                   prng.rand(100) < 1
-          end
-          false
+          agent.position.neighborhood.map do |_, position|
+            check(position) \
+              .has_an(:agent) \
+              .is(:zombie) \
+              .is(:fighting) \
+              .to_b &&
+            prng.rand(100) < 10
+          end.any?
         },
         10
       )
@@ -65,30 +63,28 @@ module ZombieEpidemic
       states[:infected].add_transition(
         states[:dead],
         ->(state, agent) {
-          agent.position.neighborhood.each do |_, position|
-            return check(position) \
-                     .has_an(:agent) \
-                     .is(:zombie) \
-                     .is(:fighting) \
-                     .to_b &&
-                   prng.rand(100) < 10
-          end
-          false
+          agent.position.neighborhood.map do |_, position|
+            check(position) \
+              .has_an(:agent) \
+              .is(:zombie) \
+              .is(:fighting) \
+              .to_b &&
+            prng.rand(100) < 10
+          end.any?
         }
       )
 
       states[:zombie].add_transition(
         states[:dead],
         ->(state, agent) {
-          agent.position.neighborhood.each do |_, position|
-            return check(position) \
-                     .has_an(:agent) \
-                     .is(:susceptible, :infected) \
-                     .is(:fighting) \
-                     .to_b &&
-                   prng.rand(100) < 50
-          end
-          false
+          agent.position.neighborhood.map do |_, position|
+            check(position) \
+              .has_an(:agent) \
+              .is(:susceptible, :infected) \
+              .is(:fighting) \
+              .to_b &&
+            prng.rand(100) < 95
+          end.any?
         }
       )
     end
