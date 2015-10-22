@@ -14,6 +14,8 @@ module ZombieEpidemic
       )
       fetch_state(states, :zombie).define_action(
         ->(agent) {
+          neighbors = agent.perceive
+          return :fight unless neighbors.select{ |_, neighbor| neighbor.class.name.split("::").last == "Agent" && neighbor.state.name == :susceptible }.empty?
           [:walk, :fight].sample
         }
       )
