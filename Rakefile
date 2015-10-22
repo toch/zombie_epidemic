@@ -16,9 +16,11 @@ end
 
 namespace :movie do
   desc 'Create a MPG movie from sequence of maps'
-  task :create, [:directory] do |t, args|
+  task :create, [:directory, :framerate] do |t, args|
     abort 'missing directory' if args.directory.nil?
-    exec "ffmpeg -framerate 5 -pattern_type glob -i '#{args.directory}/step_*.png' -s:v 500x500 -c:v libx264 -pix_fmt yuv420p #{args.directory}.mpg"
+    framerate = args.framerate
+    framerate ||= 5
+    exec "ffmpeg -framerate #{framerate} -pattern_type glob -i '#{args.directory}/step_*.png' -s:v 500x500 -c:v libx264 -pix_fmt yuv420p #{args.directory}.mpg"
   end
 
   desc 'Play the associated movie'
