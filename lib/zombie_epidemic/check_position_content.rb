@@ -9,7 +9,7 @@ module ZombieEpidemic
     def has_an(kind)
       return self unless @truth
       return self unless kind
-      @truth = @position.contents.class.name == kind.to_s.capitalize
+      @truth = @position.contents.name == kind.to_s.capitalize
       self
     end
 

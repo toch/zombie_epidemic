@@ -53,6 +53,10 @@ module ZombieEpidemic
       @position = nil
     end
 
+    def name
+      self.class.name.split("::").last
+    end
+
     private
     def neighborhood
       @position.neighborhood

@@ -14,12 +14,13 @@ describe ZombieEpidemic::StateTransitionMachine do
   subject                   { ZombieEpidemic::StateTransitionMachine.new(FakeRandom) }
 
   class Agent
-    attr_accessor :position, :state, :state_age, :current_action
+    attr_accessor :position, :state, :state_age, :current_action, :name
     def initialize(options = {})
       @position = options[:position]
       @state = options[:state]
       @state_age = options[:state_age]
       @current_action = options[:current_action]
+      @name = "Agent"
     end
   end
 
