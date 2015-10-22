@@ -9,7 +9,7 @@ module ZombieEpidemic
       @position = start_position
       @new_position = @position
       @position.contents = self
-      @current_action = :stay
+      @current_action = @state.decide_action_for(self)
     end
 
     def walk(direction)
