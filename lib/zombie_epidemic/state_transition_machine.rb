@@ -20,7 +20,8 @@ module ZombieEpidemic
     private
 
     def load_definition
-      load(File.join(File.dirname(File.expand_path(__FILE__)), "stm_definition.rb"))
+      # load(File.join(File.dirname(File.expand_path(__FILE__)), "stm_definition.rb"))
+      load(File.join(File.dirname(File.expand_path(__FILE__)), "stm_definition_walking_dead.rb"))
     end
 
     def load_states
